@@ -1,0 +1,17 @@
+{
+    "canisters": {
+        "messagr_app": {
+            "candid": "src/messagr_app/messagr_app.did",
+            "package": "messagr_app",
+            "type": "rust"
+        }
+    },
+    "defaults": {
+        "build": {
+            "args": "",
+            "packtool": ""
+        }
+    },
+    "version": 1,
+    "dfx": "0.15.0"
+}

@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-primary: 79, 70, 229;
+    /* Indigo 600 */
+    --color-primary-dark: 67, 56, 202;
+    /* Indigo 700 */
+    --color-primary-light: 99, 102, 241;
+    /* Indigo 500 */
+
+    --color-secondary: 16, 185, 129;
+    /* Emerald 500 */
+    --color-secondary-dark: 5, 150, 105;
+    /* Emerald 600 */
+    --color-secondary-light: 52, 211, 153;
+    /* Emerald 400 */
+
+    --color-danger: 239, 68, 68;
+    /* Red 500 */
+    --color-warning: 234, 179, 8;
+    /* Yellow 500 */
+    --color-success: 34, 197, 94;
+    /* Green 500 */
+
+    --color-bg-light: 255, 255, 255;
+    /* White */
+    --color-bg-dark: 17, 24, 39;
+    /* Gray 900 */
+
+    --color-text-light: 31, 41, 55;
+    /* Gray 800 */
+    --color-text-dark: 243, 244, 246;
+    /* Gray 100 */
+
+    --telegram-color: 0, 136, 204;
+    --slack-color: 74, 21, 75;
+    --discord-color: 114, 137, 218;
+    --twitter-color: 29, 161, 242;
+    --facebook-color: 66, 103, 178;
+    --whatsapp-color: 37, 211, 102;
+}
+
+@layer base {
+    html {
+        font-family: 'Inter', sans-serif;
+        height: 100%;
+    }
+
+    body {
+        height: 100%;
+        @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    }
+
+    #root {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h1 {
+        @apply text-2xl font-bold md:text-3xl;
+    }
+
+    h2 {
+        @apply text-xl font-bold md:text-2xl;
+    }
+
+    h3 {
+        @apply text-lg font-bold md:text-xl;
+    }
+
+    a {
+        @apply text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+    }
+
+    .btn-primary {
+        @apply bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500;
+    }
+
+    .btn-secondary {
+        @apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-indigo-500;
+    }
+
+    .btn-danger {
+        @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+    }
+
+    .input {
+        @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+    }
+
+    .card {
+        @apply bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg;
+    }
+
+    .card-header {
+        @apply px-4 py-5 sm:px-6 border-b border-gray-200 dark:border-gray-700;
+    }
+
+    .card-body {
+        @apply px-4 py-5 sm:p-6;
+    }
+
+    .card-footer {
+        @apply px-4 py-4 sm:px-6 border-t border-gray-200 dark:border-gray-700;
+    }
+
+    /* Platform specific styles */
+    .platform-badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+
+    .platform-telegram {
+        @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100;
+    }
+
+    .platform-slack {
+        @apply bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-100;
+    }
+
+    .platform-discord {
+        @apply bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-100;
+    }
+
+    .platform-twitter {
+        @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100;
+    }
+
+    .platform-facebook {
+        @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100;
+    }
+
+    .platform-whatsapp {
+        @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100;
+    }
+}
+
+@layer utilities {
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .flex-center {
+        @apply flex items-center justify-center;
+    }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

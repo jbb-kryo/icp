@@ -1,0 +1,96 @@
+type Error = variant {
+  NotAuthenticated;
+  PlatformError: text;
+  QueryError: text;
+  InternalError: text;
+  InvalidParameters: text;
+};
+
+type Result<T, E> = variant {
+  Ok: T;
+  Err: E;
+};
+
+type Platform = variant {
+  Telegram;
+  Slack;
+  Discord;
+  Twitter;
+  Facebook;
+  WhatsApp;
+};
+
+type AuthConfig = record {
+  platform: Platform;
+  token: text;
+  api_key: opt text;
+  api_secret: opt text;
+  redirect_uri: opt text;
+};
+
+type MessageContent = record {
+  text: text;
+  attachments: vec Attachment;
+};
+
+type Attachment = record {
+  attachment_type: text;
+  url: opt text;
+  content: opt blob;
+  name: opt text;
+};
+
+type User = record {
+  id: text;
+  name: text;
+  platform: Platform;
+  avatar_url: opt text;
+};
+
+type Message = record {
+  id: text;
+  platform: Platform;
+  conversation_id: text;
+  sender: User;
+  content: MessageContent;
+  timestamp: nat64;
+  thread_id: opt text;
+  reply_to: opt text;
+  edited: bool;
+};
+
+type Conversation = record {
+  id: text;
+  platform: Platform;
+  name: text;
+  participants: vec User;
+  created_at: nat64;
+  last_message_at: opt nat64;
+};
+
+type QueryResult = record {
+  messages: vec Message;
+  context: text;
+};
+
+service : {
+  // Authentication and setup
+  connect_platform: (AuthConfig) -> (Result<text, Error>);
+  disconnect_platform: (Platform) -> (Result<bool, Error>);
+  get_connected_platforms: () -> (vec Platform) query;
+  
+  // Data retrieval
+  sync_messages: (Platform) -> (Result<nat64, Error>);
+  get_conversations: (Platform) -> (Result<vec Conversation, Error>) query;
+  get_messages: (text, opt nat64, opt nat64) -> (Result<vec Message, Error>) query;
+  
+  // Intelligent querying
+  query_conversations: (text) -> (Result<QueryResult, Error>) query;
+  
+  // User management
+  set_username: (text) -> (Result<bool, Error>);
+  get_username: () -> (text) query;
+  
+  // System
+  get_version: () -> (text) query;
+}
