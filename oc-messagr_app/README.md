@@ -1,122 +1,279 @@
-OC-Messagr is a powerful cross-platform messaging aggregator built for the Internet Computer Protocol (ICP) that brings together all your conversations from Telegram, Slack, Discord, Twitter, Facebook, and WhatsApp into one unified interface with AI-powered search and insights.
-✨ Features
+Messagr: Cross-Platform Message Aggregator for ICP
+==================================================
 
-Multi-Platform Integration: Connect and sync messages from all major messaging platforms
-AI-Powered Search: Ask natural language questions about your messages across all platforms
-Conversation Insights: Get AI-generated analysis of conversation sentiment, topics, and important points
-Advanced Indexing: Fast, accurate message search with sophisticated filtering
-Privacy-Focused: Your data stays in your personal canister on ICP, under your control
-Cross-Platform Queries: Find information regardless of which platform it came from
+Messagr is a Rust-based application deployed as an Internet Computer Protocol (ICP) canister that allows you to connect multiple messaging platforms (Telegram, Slack, Discord, Twitter, Facebook Messenger, and WhatsApp) and intelligently query your conversations across all platforms.
 
-🚀 Quick Start
-Prerequisites
+Features
+--------
 
-dfx (≥ 0.12.0)
-Rust (≥ 1.58)
-Node.js (≥ 16)
+-   **Multi-Platform Integration**: Connect and sync messages from Telegram, Slack, Discord, Twitter, Facebook, and WhatsApp
+-   **Unified Message Storage**: All your messages in one secure place on the Internet Computer
+-   **Intelligent Querying**: Ask natural language questions about your conversations
+-   **Cross-Platform Search**: Find messages across all your platforms with a single query
+-   **Privacy-Focused**: Your data stays in your canister, under your control
+-   **ICP Native**: Built for the Internet Computer using Rust
+-   **AI-Powered Analysis**: Leverage OpenChat SDK for intelligent conversation insights
+-   **Advanced Indexing**: Sophisticated search and filtering capabilities
+
+Architecture
+------------
+
+The application is structured as a Rust canister for ICP with the following components:
+
+-   **Auth Modules**: Platform-specific authentication handlers
+-   **Connectors**: API clients for each messaging platform
+-   **Storage**: Stable memory storage for messages and conversations
+-   **Query Engine**: Natural language processing for intelligent queries
+-   **OpenChat SDK Integration**: Leveraging ICP's native chat functionality
+-   **Advanced Indexing**: Efficient search and retrieval system
+-   **React Frontend**: Modern, responsive user interface
 
 Installation
-bash# Clone the repository
-git clone https://github.com/yourusername/oc-messagr.git
-cd oc-messagr
+------------
 
-# Install dependencies
+### Prerequisites
+
+-   [DFX SDK](https://internetcomputer.org/docs/current/developer-tools/install) for Internet Computer development
+-   Rust and Cargo
+-   Node.js and npm (for frontend development)
+
+### Setup
+
+1.  Clone the repository:
+
+bash
+
+```
+git clone https://github.com/yourusername/messagr.git
+cd messagr
+```
+
+1.  Install dependencies:
+
+bash
+
+```
 npm install
+```
 
-# Start the local ICP replica
-dfx start --clean --background
+1.  Deploy the canister to the local network:
 
-# Deploy the canisters
+bash
+
+```
+dfx start --background
 dfx deploy
-Usage
+```
 
-Visit http://localhost:8080 to access your local deployment
-Log in with your Internet Identity
-Connect your messaging platforms in the Settings tab
-Start searching across your messages with natural language queries!
+1.  Deploy to the IC mainnet:
 
-🔧 Architecture
-OC-Messagr is built with a modular architecture:
+bash
 
-Backend: Rust-based ICP canister with stable memory storage
-Frontend: React application with Tailwind CSS
-Indexing: Custom text search with Tantivy for advanced querying
-AI: OpenChat SDK integration for intelligent search and analysis
+```
+dfx deploy --network ic
+```
 
-oc-messagr/
+Using Messagr
+-------------
+
+### Connecting Platforms
+
+To connect a messaging platform, you'll need to:
+
+1.  Obtain API credentials for the platform
+2.  Call the `connect_platform` method with the appropriate auth config
+3.  Authorize the application via OAuth (where applicable)
+
+Example for connecting Telegram:
+
+javascript
+
+```
+// Using the IC agent
+await agent.call("messagr_app", "connect_platform", {
+  platform: { Telegram: null },
+  token: "your-telegram-bot-token",
+  api_key: null,
+  api_secret: null,
+  redirect_uri: null
+});
+```
+
+### Syncing Messages
+
+To sync messages from a connected platform:
+
+javascript
+
+```
+await agent.call("messagr_app", "sync_messages", { Telegram: null });
+```
+
+### Querying Conversations
+
+The power of Messagr comes from its ability to query across platforms:
+
+javascript
+
+```
+// Basic query
+const result = await agent.query("messagr_app", "query_conversations", "find messages about project deadlines from last week");
+
+// AI-enhanced query
+const aiResult = await agent.query("messagr_app", "ai_enhanced_query", "What did Alice say about the budget in our last meeting?");
+
+// Platform-specific AI query
+const platformResult = await agent.query("messagr_app", "ai_query_platform", [
+  "find all attachments shared by John",
+  { Slack: null }
+]);
+```
+
+Platform Integration Details
+----------------------------
+
+### Telegram
+
+-   Uses Bot API
+-   Requires a bot token from BotFather
+
+### Slack
+
+-   Uses OAuth 2.0 and Slack API
+-   Requires App credentials from Slack API console
+
+### Discord
+
+-   Uses OAuth 2.0 and Discord Bot API
+-   Requires Bot token and application credentials
+
+### Twitter
+
+-   Uses OAuth 1.0a
+-   Requires API key, API secret, and access tokens
+
+### Facebook Messenger
+
+-   Uses Graph API and webhooks
+-   Requires Page Access Token and App credentials
+
+### WhatsApp
+
+-   Uses WhatsApp Business API
+-   Requires Business Account and API credentials
+
+Development
+-----------
+
+### Project Structure
+
+```
+messagr_app/
+├── Cargo.toml
+├── dfx.json
 ├── src/
-│   ├── messagr_app/           # Rust backend canister
-│   │   ├── src/
-│   │   │   ├── auth/          # Platform authentication
-│   │   │   ├── connectors/    # Platform API integrations
-│   │   │   ├── indexing/      # Advanced search indexing
-│   │   │   ├── openchat/      # OpenChat SDK integration
-│   │   │   ├── query/         # Query processing
-│   │   │   └── storage/       # Stable memory storage
-│   ├── messagr_frontend/      # React frontend
-│   │   ├── src/
-│   │   │   ├── components/    # UI components
-│   │   │   ├── hooks/         # React hooks
-│   │   │   ├── pages/         # Application pages
-│   │   │   └── context/       # React context providers
-🔍 AI-Powered Features
-OC-Messagr uses the OpenChat SDK to provide intelligent capabilities:
+│   ├── messagr_app/
+│   │   ├── Cargo.toml
+│   │   └── src/
+│   │       ├── lib.rs             # Main canister code
+│   │       ├── auth/              # Authentication modules
+│   │       ├── connectors/        # API connectors
+│   │       ├── storage/           # Data storage and indexing
+│   │       ├── query/             # Query processing
+│   │       ├── indexing/          # Advanced search indexing
+│   │       └── openchat/          # OpenChat SDK integration
+│   └── declarations/              # Auto-generated canister interfaces
+├── messagr_frontend/              # React frontend
+└── README.md
+```
 
-Natural Language Queries: Ask questions like "What did Alice say about the project deadline in Slack last week?"
-Semantic Search: Find messages based on meaning, not just keywords
-Topic Analysis: Get summaries of discussions about specific topics
-Sentiment Analysis: Understand the emotional tone of conversations
-Key Point Extraction: Automatically identify important decisions and action items
-Conversation Flow: See how discussions evolve and relate to each other
+### Adding a New Platform
 
-🔐 Security & Privacy
+To add support for a new messaging platform:
 
-All your data is stored in your own ICP canister
-Communication with platform APIs happens securely through your canister
-Authentication tokens are stored encrypted in stable memory
-Queries are processed locally within your canister
-Only anonymized data is sent to OpenChat for AI processing
-No third-party servers store your message content
+1.  Create new authentication module in `src/messagr_app/src/auth/`
+2.  Create new connector in `src/messagr_app/src/connectors/`
+3.  Add the platform to the `Platform` enum in `lib.rs`
+4.  Update the Candid interface in `messagr_app.did`
 
-🌐 Platform Support
-PlatformFeaturesAuthenticationTelegramMessages, Groups, ChannelsBot TokenSlackMessages, Channels, DMsOAuth 2.0DiscordMessages, Servers, DMsBot Token, OAuth 2.0TwitterDMs, TweetsOAuth 1.0aFacebookMessenger conversationsOAuth 2.0, Page Access TokenWhatsAppChats (via Business API)Business API Token
-📊 Advanced Search
-OC-Messagr's search capabilities go far beyond simple text matching:
+Advanced Features
+-----------------
 
-Platform Filtering: Limit search to specific platforms
-Time Range Filtering: Find messages from specific time periods
-Content Type Filtering: Search for messages with attachments, links, etc.
-Sender Filtering: Find messages from specific people
-Natural Language Filtering: Use everyday language in your queries
-Combined Filtering: Mix and match filters for precise results
+### AI-Enhanced Queries
 
-📋 Roadmap
+The OpenChat SDK integration enables sophisticated natural language understanding:
 
- End-to-end encryption for additional security
- Mobile application for iOS and Android
- Direct message reply from within OC-Messagr
- Message translation across languages
- Rich media preview and inline player
- Advanced analytics dashboard
- Custom AI training on your conversation data
+javascript
 
-🤝 Contributing
+```
+// Topic analysis
+const analysis = await agent.query("messagr_app", "analyze_topic", "quarterly budget");
+
+// Generate conversation insights
+const insights = await agent.call("messagr_app", "generate_conversation_insights", "conversation_id_here");
+```
+
+### Advanced Indexing
+
+The sophisticated indexing system supports complex queries:
+
+javascript
+
+```
+// Advanced search with filters
+const results = await agent.query("messagr_app", "advanced_search", [
+  "project deadline",          // query
+  { Slack: null },             // platform
+  [1672531200000],             // start_time (millis)
+  [1672704000000],             // end_time (millis)
+  [],                          // conversation_id
+  [],                          // sender_id
+  [true],                      // has_attachments
+  [],                          // attachment_type
+  [],                          // is_reply
+  [],                          // in_thread
+  [],                          // is_edited
+  "timestamp",                 // sort_by
+  "desc",                      // sort_direction
+  [50],                        // limit
+  [0]                          // offset
+]);
+
+// Optimize indices for better performance
+await agent.call("messagr_app", "optimize_indices");
+
+// Get index statistics
+const stats = await agent.query("messagr_app", "get_index_stats");
+```
+
+Security Considerations
+-----------------------
+
+-   All access tokens are stored in the canister's stable memory
+-   Platform API requests are made via canister outbound HTTP calls
+-   OAuth flows require proper redirect URI configuration
+-   Users should review platform-specific permissions
+
+Limitations
+-----------
+
+-   ICP canisters have limitations for HTTP outbound calls
+-   Some platforms may require external relays for webhooks
+-   Real-time updates are subject to canister update cycles
+
+Contributing
+------------
+
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-Fork the repository
-Create your feature branch (git checkout -b feature/amazing-feature)
-Commit your changes (git commit -m 'Add some amazing feature')
-Push to the branch (git push origin feature/amazing-feature)
-Open a Pull Request
+License
+-------
 
-📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
-🙏 Acknowledgements
 
-Internet Computer for the blockchain platform
-OpenChat for the AI SDK integration
-Tantivy for text search capabilities
-All the platform APIs that make this integration possible
+Acknowledgements
+----------------
 
-
-Built with ❤️ for the Internet Computer community
+-   [OpenChat SDK](https://github.com/open-chat-labs/open-chat) for AI capabilities
+-   [Tantivy](https://github.com/quickwit-oss/tantivy) for text indexing
+-   [Internet Computer](https://internetcomputer.org/) for the blockchain platform
