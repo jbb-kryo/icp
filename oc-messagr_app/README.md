@@ -1,7 +1,7 @@
-Messagr: Cross-Platform Message Aggregator for ICP
+OC Messagr: Cross-Platform Message Aggregator for ICP
 ==================================================
 
-Messagr is a Rust-based application deployed as an Internet Computer Protocol (ICP) canister that allows you to connect multiple messaging platforms (Telegram, Slack, Discord, Twitter, Facebook Messenger, and WhatsApp) and intelligently query your conversations across all platforms.
+OC Messagr is a Rust-based application deployed as an Internet Computer Protocol (ICP) canister that allows you to connect multiple messaging platforms (Telegram, Slack, Discord, Twitter, Facebook Messenger, and WhatsApp) and intelligently query your conversations across all platforms.
 
 Features
 --------

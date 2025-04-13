@@ -1,239 +1,231 @@
-Messagr - Cross-Platform Messaging Aggregator
-=============================================
+OC Messagr Frontend
+===================
 
-Messagr is a powerful cross-platform messaging aggregator built on the Internet Computer Protocol (ICP), allowing you to connect, search, and analyze your conversations across multiple messaging platforms in one unified interface.
+A cross-platform messaging aggregator frontend for the Internet Computer Protocol (ICP), allowing you to connect and query your conversations across Telegram, Slack, Discord, Twitter, Facebook, and WhatsApp.
 
 Features
 --------
 
--   **Multi-Platform Integration**: Connect Telegram, Slack, Discord, Twitter, Facebook Messenger, and WhatsApp
--   **Unified Message Hub**: Access all your conversations in a single interface
+-   **Unified Interface**: Access all your messaging platforms in one place
 -   **AI-Powered Search**: Ask natural language questions about your conversations
--   **Advanced Filtering**: Search by platform, time range, sender, content type, and more
--   **Conversation Insights**: Get AI-generated insights about conversation topics, sentiment, and key points
--   **Secure & Private**: Your data stays in your own canister on the Internet Computer
--   **Responsive Design**: Works seamlessly on desktop and mobile devices
+-   **Cross-Platform Querying**: Find messages across different platforms with a single query
+-   **Conversation Analytics**: Get AI-generated insights about your conversations
+-   **Platform Management**: Connect, sync, and manage different messaging platforms
+-   **Advanced Filtering**: Filter messages by platform, time, content type, and more
+-   **Dark/Light Mode**: Customizable interface theme
 
-Technology Stack
-----------------
+Prerequisites
+-------------
 
--   **Backend**: Rust deployed as an ICP canister
--   **Frontend**: React with TailwindCSS
--   **AI Integration**: OpenChat SDK for natural language processing
--   **Search**: Advanced indexing with Tantivy
--   **Authentication**: Internet Identity
+-   [Node.js](https://nodejs.org/) (v16 or later)
+-   [npm](https://www.npmjs.com/) (v7 or later)
+-   [dfx](https://internetcomputer.org/docs/current/developer-tools/install) (v0.15.0 or later)
+-   [Rust](https://www.rust-lang.org/tools/install) (for backend development)
 
-Getting Started
----------------
+Quick Start
+-----------
 
-### Prerequisites
-
--   [DFX SDK](https://internetcomputer.org/docs/current/developer-tools/install) (version 0.12.0 or later)
--   [Node.js](https://nodejs.org/) (version 16 or later)
--   [Rust](https://www.rust-lang.org/tools/install) (version 1.58 or later)
--   Internet Computer identity with cycles
-
-### Local Development Setup
-
-1.  Clone the repository:
+### 1\. Clone the repository
 
 bash
 
 ```
-git clone https://github.com/yourusername/messagr.git
-cd messagr
+git clone https://github.com/yourusername/oc-messagr.git
+cd oc-messagr/messagr_frontend
 ```
 
-1.  Install dependencies:
+### 2\. Install dependencies
 
 bash
 
 ```
-# Install frontend dependencies
-cd messagr_frontend
 npm install
-
-# Install Rust dependencies
-cd ../messagr_app
-cargo build
 ```
 
-1.  Start the local IC replica:
+### 3\. Configure environment
+
+Create a `.env` file in the root of the frontend directory:
+
+```
+DFX_NETWORK=local
+MESSAGR_APP_CANISTER_ID=your_backend_canister_id
+OPENCHAT_CANISTER_ID=xomae-vyaaa-aaaaq-aabhq-cai
+```
+
+### 4\. Start the development server
 
 bash
 
 ```
-dfx start --clean --background
-```
-
-1.  Deploy the canisters locally:
-
-bash
-
-```
-dfx deploy
-```
-
-1.  Start the frontend development server:
-
-bash
-
-```
-cd messagr_frontend
 npm start
 ```
 
-1.  Open your browser and navigate to `http://localhost:8080`
+Visit `http://localhost:8080` in your browser.
 
-### Connecting Platforms
+Building for Production
+-----------------------
 
-To connect messaging platforms, you'll need API credentials for each service:
-
-1.  **Telegram**: Get a bot token from [BotFather](https://t.me/BotFather)
-2.  **Slack**: Create an app at [api.slack.com](https://api.slack.com/apps)
-3.  **Discord**: Register an app on the [Discord Developer Portal](https://discord.com/developers/applications)
-4.  **Twitter**: Apply for API access at [developer.twitter.com](https://developer.twitter.com/)
-5.  **Facebook**: Create an app at [developers.facebook.com](https://developers.facebook.com/)
-6.  **WhatsApp**: Set up WhatsApp Business API integration
-
-Detailed instructions for each platform are available in the [Setup Guide](docs/platform-setup.md).
-
-Deployment
-----------
-
-### Deploying to the Internet Computer
-
-1.  Build the project for production:
+### 1\. Build the frontend assets
 
 bash
 
 ```
-dfx build --network ic
+npm run build
 ```
 
-1.  Deploy to the IC mainnet:
+### 2\. Deploy to the Internet Computer
 
 bash
 
 ```
+dfx deploy --network ic messagr_frontend
+```
+
+Connecting to a Backend Canister
+--------------------------------
+
+The frontend requires a deployed instance of the Messagr backend canister. You can either:
+
+1.  Deploy your own backend (see the main repository README)
+2.  Connect to an existing backend by updating the `MESSAGR_APP_CANISTER_ID` environment variable
+
+To update the canister ID after deployment:
+
+bash
+
+```
+dfx canister call messagr_frontend update_backend_canister '("rrkah-fqaaa-aaaaa-aaaaq-cai")'
+```
+
+Project Structure
+-----------------
+
+```
+messagr_frontend/
+├── package.json         # Dependencies and scripts
+├── dfx.json             # IC deployment configuration
+├── webpack.config.js    # Build configuration
+├── src/
+│   ├── index.html       # Entry HTML file
+│   ├── index.jsx        # Main React entry point
+│   ├── assets/          # Static assets (CSS, icons, etc.)
+│   ├── components/      # React components
+│   ├── pages/           # Page components
+│   ├── hooks/           # Custom React hooks
+│   ├── context/         # React context providers
+│   └── utils/           # Utility functions
+└── public/              # Public static assets
+```
+
+Key Components
+--------------
+
+-   **AIEnhancedQueryInput**: Intelligent search input with AI capabilities
+-   **ConversationInsights**: AI-generated analytics for conversations
+-   **MessageView**: Conversation and message display
+-   **PlatformSettings**: Platform connection management
+
+Authentication
+--------------
+
+The app uses Internet Identity for authentication, which is built into the ICP ecosystem. When running locally, you'll be prompted to create or use a local development identity.
+
+Customization
+-------------
+
+### Styling
+
+The app uses Tailwind CSS for styling. To customize the appearance:
+
+1.  Edit `src/assets/styles/main.css` for global styles
+2.  Modify component classes for specific element styling
+3.  Update theme variables in the CSS root to change color schemes
+
+### API Configuration
+
+Connection parameters for different platforms can be adjusted in the corresponding platform settings components.
+
+Deployment Options
+------------------
+
+### Option 1: Deploy with the Backend
+
+If you're also deploying the backend, you can deploy both canisters in one step:
+
+bash
+
+```
+# From the project root
 dfx deploy --network ic
 ```
 
-1.  Fund your canisters with cycles:
+### Option 2: Deploy Frontend Only
+
+To deploy just the frontend to connect to an existing backend:
 
 bash
 
 ```
-dfx ledger --network ic top-up $(dfx canister --network ic id messagr_app) --amount 1
-dfx ledger --network ic top-up $(dfx canister --network ic id messagr_frontend) --amount 0.5
+# From the frontend directory
+dfx deploy --network ic messagr_frontend
 ```
 
-1.  Access your deployed application at:
+### Option 3: Static Hosting
 
-```
-https://<frontend_canister_id>.ic0.app
-```
-
-Usage Guide
------------
-
-### Basic Navigation
-
--   **Dashboard**: Overview of connected platforms and recent activity
--   **Conversations**: Browse all conversations across platforms
--   **Settings**: Connect platforms and configure application preferences
-
-### AI-Powered Search
-
-Click the AI toggle in the search bar to enable intelligent queries like:
-
--   "Find messages about project deadlines from Slack last week"
--   "Show me all attachments shared in WhatsApp conversations with Alice"
--   "What did the marketing team discuss about the new campaign on Discord?"
-
-### Conversation Insights
-
-In any conversation, click the "AI Insights" button to view:
-
--   Key entities and topics
--   Sentiment analysis
--   Conversation timeline
--   Key decisions and action items
-
-Maintenance
------------
-
-### Managing Indices
-
-To maintain optimal search performance:
-
-1.  Optimize indices regularly:
+You can also build the frontend for static hosting:
 
 bash
 
 ```
-dfx canister --network ic call messagr_app optimize_indices
+npm run build:static
 ```
 
-1.  Rebuild indices if search results become inconsistent:
+This generates static assets in the `dist` directory, which can be hosted on any static hosting service.
 
-bash
+Troubleshooting
+---------------
 
-```
-dfx canister --network ic call messagr_app rebuild_indices
-```
+### Common Issues
 
-### Monitoring Cycle Usage
-
-Check your canister cycle balance:
-
-bash
-
-```
-dfx canister --network ic status messagr_app
-```
-
-Architecture
-------------
-
-The application consists of two main canisters:
-
-1.  **messagr_app (Rust)**: Backend with platform connectors, message storage, and intelligent querying
-2.  **messagr_frontend (React)**: User interface for interacting with the backend
-
-Key components include:
-
--   **Platform Connectors**: Integrate with messaging service APIs
--   **Storage System**: Efficiently stores messages and conversations
--   **Indexing Engine**: Enables fast search across large message volumes
--   **OpenChat Integration**: Provides AI-powered search and insights
+1.  **Connection to backend fails**:
+    -   Verify the backend canister ID is correct
+    -   Ensure the backend canister is running
+    -   Check browser console for network errors
+2.  **Authentication issues**:
+    -   Clear browser cache and cookies
+    -   Try using a different browser
+    -   Verify Internet Identity is working properly
+3.  **Platform connection failures**:
+    -   Confirm API credentials are correct
+    -   Check if redirect URIs are properly configured
+    -   Ensure the platform's API services are operational
 
 Contributing
 ------------
 
-We welcome contributions! Please see <CONTRIBUTING.md> for guidelines.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1.  Fork the repository
+2.  Create your feature branch (`git checkout -b feature/amazing-feature`)
+3.  Commit your changes (`git commit -m 'Add some amazing feature'`)
+4.  Push to the branch (`git push origin feature/amazing-feature`)
+5.  Open a Pull Request
 
 License
 -------
 
-This project is licensed under the MIT License - see the <LICENSE> file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 Acknowledgments
 ---------------
 
--   [OpenChat](https://oc.app) for their AI capabilities
--   [DFINITY](https://dfinity.org) for the Internet Computer Protocol
--   All the messaging platforms for their APIs
+-   [OpenChat SDK](https://openchat.com/sdk) for AI-powered messaging features
+-   [Internet Computer](https://internetcomputer.org/) for the decentralized hosting platform
+-   [DFINITY Foundation](https://dfinity.org/) for creating the Internet Computer Protocol
 
-Support
+Contact
 -------
 
-If you encounter any issues or have questions, please:
+Project Link: <https://github.com/yourusername/oc-messagr>
 
--   Check the [FAQ](docs/faq.md)
--   Submit an issue on GitHub
--   Join our community on [Discord](https://discord.gg/messagr)
-
-* * * * *
-
-Built with ❤️ on the Internet Computer
+For support or questions, please open an issue on the GitHub repository.
